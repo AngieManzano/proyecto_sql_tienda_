@@ -1,10 +1,1 @@
 # proyecto_sql_tienda_
-proyecto
-hola
-
-- go
-- ha
-aaa
-jh
-
-z
