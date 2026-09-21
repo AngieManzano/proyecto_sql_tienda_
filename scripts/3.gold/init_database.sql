@@ -1,34 +1,20 @@
-/*
-=============================================================
-Crear Base de Datos y Esquemas
-=============================================================
-Propósito del Script:
-    Este script crea una nueva base de datos llamada 'DataWarehouse' después de verificar si ya existe. 
-    Si la base de datos existe, se elimina y se vuelve a crear. Además, el script configura tres esquemas 
-    dentro de la base de datos: 'bronze', 'silver' y 'gold'.
-	
-ADVERTENCIA:
-    La ejecución de este script eliminará por completo la base de datos 'DataWarehouse' si existe. 
-    Todos los datos de la base de datos se perderán de forma permanente. Proceda con precaución 
-    y asegúrese de tener copias de seguridad adecuadas antes de ejecutar este script.
-*/
+
 
 USE master;
 GO
 
--- Eliminar y volver a crear la base de datos 'DataWarehouse'
-IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'DataWarehouse')
+IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'proyecto_sql_tienda_')
 BEGIN
-    ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE DataWarehouse;
+    ALTER DATABASE proyecto_sql_tienda_ SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE proyecto_sql_tienda_;
 END;
 GO
 
--- Crear la base de datos 'DataWarehouse'
-CREATE DATABASE DataWarehouse;
+
+CREATE DATABASE proyecto_sql_tienda_;
 GO
 
-USE DataWarehouse;
+USE proyecto_sql_tienda_;
 GO
 
 -- Crear Esquemas
@@ -48,16 +34,15 @@ SELECT *
 FROM bronze.crm_cust_info;
 GO
 
--- EXPLORACION 
-PRINT 'HOLA MUNDO'
+PRINT 'HOLA'
 
 TRUNCATE TABLE bronze.crm_cust_info;
 
 
-SELECT DISTINCT [pais]
+SELECT DISTINCT [departamento]
 FROM bronze.erp_loc_a101;
 
-SELECT DISTINCT [pais]
+SELECT DISTINCT [departamento]
 FROM silver.erp_loc_a101
 
 

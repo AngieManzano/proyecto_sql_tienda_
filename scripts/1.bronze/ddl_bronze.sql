@@ -38,7 +38,6 @@ CREATE TABLE bronze.crm_cust_info (
     cli_clave           NVARCHAR(50),
     cli_nombre          NVARCHAR(50),
     cli_apellido        NVARCHAR(50),
-    cli_estado_civil    NVARCHAR(50),
     cli_genero          NVARCHAR(50),
     cli_fecha_creacion  DATE
 );
@@ -119,7 +118,7 @@ GO
 
 CREATE TABLE bronze.erp_loc_a101 (
     id_cliente    NVARCHAR(50),
-    pais          NVARCHAR(50)
+    departamento    NVARCHAR(50)
 );
 GO
 

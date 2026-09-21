@@ -1,21 +1,4 @@
-/*
-===============================================================================
-Procedimiento Almacenado: Cargar Capa Silver (Bronze -> Silver)
-===============================================================================
-Propósito del Script:
-    Este procedimiento almacenado realiza el proceso ETL (Extracción, Transformación, Carga)
-    para poblar las tablas del esquema 'silver' desde el esquema 'bronze'.
-    Acciones Realizadas:
-        - Trunca las tablas Silver.
-        - Inserta los datos transformados y limpios desde Bronze a las tablas Silver.
 
-Parámetros:
-    Ninguno.
-
-Ejemplo de Uso:
-    EXEC silver.load_silver;
-===============================================================================
-*/
 
 CREATE OR ALTER PROCEDURE silver.load_silver AS
 BEGIN
@@ -40,7 +23,6 @@ BEGIN
             cli_clave, 
             cli_nombre, 
             cli_apellido, 
-            cli_estado_civil, 
             cli_genero,
             cli_fecha_creacion
         )
@@ -49,11 +31,7 @@ BEGIN
             cli_clave,
             TRIM(cli_nombre) AS cli_nombre,
             TRIM(cli_apellido) AS cli_apellido,
-            CASE 
-                WHEN UPPER(TRIM(cli_estado_civil)) = 'S' THEN 'Soltero'
-                WHEN UPPER(TRIM(cli_estado_civil)) = 'M' THEN 'Casado'
-                ELSE 'n/a'
-            END AS cli_estado_civil, -- Normalizar estado civil a un formato legible
+          
             CASE 
                 WHEN UPPER(TRIM(cli_genero)) = 'F' THEN 'Femenino'
                 WHEN UPPER(TRIM(cli_genero)) = 'M' THEN 'Masculino'
@@ -99,7 +77,7 @@ BEGIN
                 WHEN UPPER(TRIM(prd_linea)) = 'S' THEN 'Otras Ventas'
                 WHEN UPPER(TRIM(prd_linea)) = 'T' THEN 'Turismo'
                 ELSE 'n/a'
-            END AS prd_linea, -- Mapear codigos de linea de producto a valores descriptivos
+            END AS prd_linea,
             TRY_CAST(prd_fecha_inicio AS DATE) AS prd_fecha_inicio,
             TRY_CAST(
                 LEAD(prd_fecha_inicio) OVER (PARTITION BY prd_clave ORDER BY prd_fecha_inicio) - 1 
@@ -191,6 +169,7 @@ BEGIN
         PRINT '>> Duracion de la Carga: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' segundos';
         PRINT '>> -------------';
 
+
         -- Cargando silver.erp_loc_a101
         SET @start_time = GETDATE();
         PRINT '>> Truncando Tabla: silver.erp_loc_a101';
@@ -198,16 +177,15 @@ BEGIN
         PRINT '>> Insertando Datos En: silver.erp_loc_a101';
         INSERT INTO silver.erp_loc_a101 (
             id_cliente,
-            pais
+            departamento
         )
         SELECT
             REPLACE(id_cliente, '-', '') AS id_cliente, 
             CASE
-                WHEN TRIM(pais) = 'DE' THEN 'Alemania'
-                WHEN TRIM(pais) IN ('US', 'USA') THEN 'Estados Unidos'
-                WHEN TRIM(pais) = '' OR pais IS NULL THEN 'n/a'
-                ELSE TRIM(pais)
-            END AS pais -- Normalizar y manejar codigos de pais faltantes o vacios
+            
+                WHEN TRIM(departamento) = '' OR departamento IS NULL THEN 'n/a'
+                ELSE TRIM(departamento)
+            END AS departamento
         FROM bronze.erp_loc_a101;
         SET @end_time = GETDATE();
         PRINT '>> Duracion de la Carga: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' segundos';

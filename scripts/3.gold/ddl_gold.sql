@@ -1,23 +1,4 @@
-/*
-===============================================================================
-Script DDL: Crear Vistas Gold
-===============================================================================
-Propósito del Script:
-    Este script crea vistas para la capa Gold en el almacén de datos (Data Warehouse).
-    La capa Gold representa las tablas de dimensiones y hechos finales (Esquema Estrella / Star Schema).
 
-    Cada vista realiza transformaciones y combina datos de la capa Silver
-    para producir un conjunto de datos limpio, enriquecido y listo para el negocio.
-
-Uso:
-    - Estas vistas pueden ser consultadas directamente para análisis e informes.
-===============================================================================
-*/
-
--- =============================================================================
--- Crear Dimensión: gold.dim_clientes
--- =============================================================================
-IF OBJECT_ID('gold.dim_clientes', 'V') IS NOT NULL
     DROP VIEW gold.dim_clientes;
 GO
 
@@ -28,8 +9,7 @@ SELECT
     ci.cli_clave                          AS numero_cliente,
     ci.cli_nombre                         AS primer_nombre,
     ci.cli_apellido                       AS apellido,
-    la.pais                               AS pais,
-    ci.cli_estado_civil                   AS estado_civil,
+    la.departamento                       AS departamento,
     CASE 
         WHEN ci.cli_genero != 'n/a' THEN ci.cli_genero -- CRM es la fuente principal para género
         ELSE COALESCE(ca.genero, 'n/a')  			   -- Alternativa de datos ERP

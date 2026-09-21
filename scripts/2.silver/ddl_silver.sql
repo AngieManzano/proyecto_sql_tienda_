@@ -1,13 +1,4 @@
-/*
-===============================================================================
-Script DDL: Crear Tablas Silver
-===============================================================================
-Propósito del Script:
-    Este script crea tablas en el esquema 'silver', eliminando las tablas existentes 
-    si ya existen.
-    Ejecute este script para redefinir la estructura DDL de las tablas de la capa 'silver'.
-===============================================================================
-*/
+
 
 IF OBJECT_ID('silver.crm_cust_info', 'U') IS NOT NULL
     DROP TABLE silver.crm_cust_info;
@@ -18,12 +9,21 @@ CREATE TABLE silver.crm_cust_info (
     cli_clave           NVARCHAR(50),
     cli_nombre          NVARCHAR(50),
     cli_apellido        NVARCHAR(50),
-    cli_estado_civil    NVARCHAR(50),
     cli_genero          NVARCHAR(50),
     cli_fecha_creacion  DATE,
     dwh_fecha_creacion  DATETIME2 DEFAULT GETDATE()
 );
 GO
+
+
+
+
+
+
+
+
+
+
 
 IF OBJECT_ID('silver.crm_prd_info', 'U') IS NOT NULL
     DROP TABLE silver.crm_prd_info;
@@ -42,6 +42,15 @@ CREATE TABLE silver.crm_prd_info (
 );
 GO
 
+
+
+
+
+
+
+
+
+
 IF OBJECT_ID('silver.crm_sales_details', 'U') IS NOT NULL
     DROP TABLE silver.crm_sales_details;
 GO
@@ -58,7 +67,16 @@ CREATE TABLE silver.crm_sales_details (
     vta_precio            INT,
     dwh_fecha_creacion    DATETIME2 DEFAULT GETDATE()
 );
+
 GO
+
+
+
+
+
+
+
+
 
 IF OBJECT_ID('silver.erp_loc_a101', 'U') IS NOT NULL
     DROP TABLE silver.erp_loc_a101;
@@ -70,6 +88,16 @@ CREATE TABLE silver.erp_loc_a101 (
     dwh_fecha_creacion  DATETIME2 DEFAULT GETDATE()
 );
 GO
+
+
+
+
+
+
+
+
+
+
 
 IF OBJECT_ID('silver.erp_cust_az12', 'U') IS NOT NULL
     DROP TABLE silver.erp_cust_az12;
@@ -83,9 +111,15 @@ CREATE TABLE silver.erp_cust_az12 (
 );
 GO
 
+
+
+
+
 IF OBJECT_ID('silver.erp_px_cat_g1v2', 'U') IS NOT NULL
     DROP TABLE silver.erp_px_cat_g1v2;
 GO
+
+
 
 CREATE TABLE silver.erp_px_cat_g1v2 (
     id_categoria        NVARCHAR(50),
